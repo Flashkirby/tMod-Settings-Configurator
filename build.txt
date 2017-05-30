@@ -1,0 +1,6 @@
+author = Flashkirby99
+version = 0.1
+displayName = Mod Settings Configurator
+homepage = 
+
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, *.suo, *.sln, .git, *.md, .git\*, *.fw.png *.TMP

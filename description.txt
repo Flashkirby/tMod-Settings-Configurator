@@ -1,0 +1,5 @@
+Definitely not a rip-off of Skyri MCM. Lets you pull up an in-game menu to modify and save settings for supported mods.
+Barebones multiplayer support where specific settings can be set as disabled in multiplayer.
+
+Credits: 
+Flashkirby99 - I am making this mod.
