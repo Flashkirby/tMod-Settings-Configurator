@@ -142,6 +142,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if(name2value != null)
             {
+                if (!sv.IsBool) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to boolean, but is expecting a different type. (" + sv.ValueType + ")");
                 sv.UpdateBool(ref Value);
             }
         }
@@ -157,6 +158,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                if (!sv.IsInt) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to integer, but is expecting a different type. (" + sv.ValueType + ")");
                 sv.UpdateInt(ref Value);
             }
         }
@@ -172,6 +174,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                if (!sv.IsFloat) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to float, but is expecting a different type. (" + sv.ValueType + ")");
                 sv.UpdateFloat(ref Value);
             }
         }
@@ -187,6 +190,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                if (!sv.IsDouble) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to double, but is expecting a different type. (" + sv.ValueType + ")");
                 sv.UpdateDouble(ref Value);
             }
         }

@@ -15,7 +15,7 @@ namespace FKTModSettings
         internal float valMin = 0;
         internal float valMax = 100f;
         private bool HasChanged;
-        private byte ValueType;
+        internal byte ValueType;
 
         public readonly string DisplayName;
 
