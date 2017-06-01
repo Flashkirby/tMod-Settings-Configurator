@@ -15,6 +15,7 @@ namespace FKTModSettings.UI
         private int _maxLines = 100;
 
         private string _text = "";
+        private float _textScale = 1f;
         private string[] _textInLines;
         public string Text
         {
@@ -48,6 +49,17 @@ namespace FKTModSettings.UI
             _text = text;
             RecalculateTextWrap();
         }
+        public void SetScale(float scale)
+        {
+            _textScale = scale;
+            RecalculateTextWrap();
+        }
+        public void SetTextScale(string text, float scale)
+        {
+            _text = text;
+            _textScale = scale;
+            RecalculateTextWrap();
+        }
 
         public override void Recalculate()
         {
@@ -73,10 +85,10 @@ namespace FKTModSettings.UI
             }
             noOfLines++;
 
-            uiText.SetText(finalText);
-            Height.Set(18f + 
-                22f * noOfLines +
-                paragraphLines * 22f, 
+            uiText.SetText(finalText, _textScale, false);
+            Height.Set(16f + 
+                25f * _textScale * (noOfLines +
+                paragraphLines), 
                 0f);
         }
     }

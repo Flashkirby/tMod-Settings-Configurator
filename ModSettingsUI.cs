@@ -149,7 +149,7 @@ namespace FKTModSettings
                         {
                             UITextWrapPanel element = new UITextWrapPanel();
                             element.index = count;
-                            element.SetText(sv.DisplayName);
+                            element.SetTextScale(sv.DisplayName, (float)sv.storedValue);
                             uiElements.Enqueue(element);
                         }
                         count++;

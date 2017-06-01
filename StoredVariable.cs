@@ -58,10 +58,11 @@ namespace FKTModSettings
         /// Store mod settings for comments
         /// </summary>
         /// <param name="displayName">The name shown in the menu</param>
-        public StoredVariable(string comment)
+        public StoredVariable(string comment, float scale)
         {
             DisplayName = comment;
             storedType = typeof(string);
+            storedValue = scale;
         }
         /// <summary>
         /// Store mod settings for bool

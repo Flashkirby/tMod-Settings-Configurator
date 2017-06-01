@@ -55,17 +55,26 @@ namespace FKTModSettings
 
         #region public void AddT(Key, DisplayName, Value, ...)
         /// <summary>
+        /// Add a comment for the configuration, with custom scale
+        /// </summary>
+        /// <param name="Comment"></param>
+        /// <param name="scale"></param>
+        public void AddComment(string Comment, float scale)
+        {
+            string uID = "c" + Comment.Length + ":" + Comment.GetHashCode();
+            if (name2value.ContainsKey(uID)) return;
+
+            StoredVariable sv = new StoredVariable(Comment, scale);
+            name2value.Add(uID, sv);
+            nameOrder.Enqueue(uID);
+        }
+        /// <summary>
         /// Add a comment for the configuration
         /// </summary>
         /// <param name="Comment"></param>
         public void AddComment(string Comment)
         {
-            string uID = "c" + Comment.Length + ":" + Comment.GetHashCode();
-            if (name2value.ContainsKey(uID)) return;
-
-            StoredVariable sv = new StoredVariable(Comment);
-            name2value.Add(uID, sv);
-            nameOrder.Enqueue(uID);
+            AddComment(Comment, 0.9f);
         }
         /// <summary>
         /// Add a value to configuration
