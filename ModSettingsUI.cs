@@ -133,13 +133,13 @@ namespace FKTModSettings
                     int count = 0;
                     foreach (StoredVariable sv in storedvars)
                     {
-                        if (sv.IsBool)
+                        if (sv.IsBoolean)
                         {
                             UIBoolSetting element = new UIBoolSetting(sv);
                             element.index = count;
                             uiElements.Enqueue(element);
                         }
-                        else if (sv.IsInt || sv.IsFloat || sv.IsDouble)
+                        else if (sv.IsWholeNumbers || sv.IsDecimalNumbers)
                         {
                             UINumberSetting element = new UINumberSetting(sv);
                             element.index = count;

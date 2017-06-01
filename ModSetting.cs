@@ -55,77 +55,136 @@ namespace FKTModSettings
 
         #region public void AddT(Key, DisplayName, Value, ...)
         /// <summary>
-        /// Add a boolean value to configuration
+        /// Add a comment for the configuration
         /// </summary>
-        /// <param name="Key">Key to reference this value later</param>
-        /// <param name="DisplayName">The display name used in the mod menu</param>
-        /// <param name="Value">Initial value</param>
-        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
-        public void AddBool(string Key, string DisplayName, bool Multiplayer)
-        {
-            if (name2value.ContainsKey(Key)) return;
-            nameOrder.Enqueue(Key);
-
-            StoredVariable sv = new StoredVariable(DisplayName, Multiplayer, false);
-            name2value.Add(Key, sv);
-        }
-        /// <summary>
-        /// Add an integer value to configuration
-        /// </summary>
-        /// <param name="Key">Key to reference this value later</param>
-        /// <param name="DisplayName">The display name used in the mod menu</param>
-        /// <param name="Value">Initial value</param>
-        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
-        public void AddInt(string Key, string DisplayName, int Min, int Max, bool Multiplayer)
-        {
-            if (name2value.ContainsKey(Key)) return;
-            nameOrder.Enqueue(Key);
-
-            StoredVariable sv = new StoredVariable(DisplayName, Multiplayer, 0);
-            sv.SetMinMax((float)Min, (float)Max);
-            name2value.Add(Key, sv);
-        }
-        /// <summary>
-        /// Add a float value to configuration
-        /// </summary>
-        /// <param name="Key">Key to reference this value later</param>
-        /// <param name="DisplayName">The display name used in the mod menu</param>
-        /// <param name="Value">Initial value</param>
-        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
-        public void AddFloat(string Key, string DisplayName, float Min, float Max, bool Multiplayer)
-        {
-            if (name2value.ContainsKey(Key)) return;
-            nameOrder.Enqueue(Key);
-
-            StoredVariable sv = new StoredVariable(DisplayName, Multiplayer, 0f);
-            sv.SetMinMax((float)Min, (float)Max);
-            name2value.Add(Key, sv);
-        }
-        /// <summary>
-        /// Add a float value to configuration
-        /// </summary>
-        /// <param name="Key">Key to reference this value later</param>
-        /// <param name="DisplayName">The display name used in the mod menu</param>
-        /// <param name="Value">Initial value</param>
-        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
-        public void AddDouble(string Key, string DisplayName, double Min, double Max, bool Multiplayer)
-        {
-            if (name2value.ContainsKey(Key)) return;
-            nameOrder.Enqueue(Key);
-
-            StoredVariable sv = new StoredVariable(DisplayName, Multiplayer, 0d);
-            sv.SetMinMax((float)Min, (float)Max);
-            name2value.Add(Key, sv);
-        }
-        
+        /// <param name="Comment"></param>
         public void AddComment(string Comment)
         {
             string uID = "c" + Comment.Length + ":" + Comment.GetHashCode();
             if (name2value.ContainsKey(uID)) return;
-            nameOrder.Enqueue(uID);
 
             StoredVariable sv = new StoredVariable(Comment);
             name2value.Add(uID, sv);
+            nameOrder.Enqueue(uID);
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddBool(string Key, string DisplayName, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, 0, 1, Multiplayer, typeof(bool));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddInt(string Key, string DisplayName, int Min, int Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(int));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddUInt(string Key, string DisplayName, uint Min, uint Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(uint));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddUInt(string Key, string DisplayName, short Min, short Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(short));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddUInt(string Key, string DisplayName, ushort Min, ushort Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(ushort));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddLong(string Key, string DisplayName, long Min, long Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(long));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddByte(string Key, string DisplayName, byte Min, byte Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(byte));
+        }
+
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddFloat(string Key, string DisplayName, float Min, float Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(double));
+        }
+        /// <summary>
+        /// Add a value to configuration
+        /// </summary>
+        /// <param name="Key">Key to reference this value later</param>
+        /// <param name="DisplayName">The display name used in the mod menu</param>
+        /// <param name="Min">Set min range for option</param>
+        /// <param name="Max">Set max range for option</param>
+        /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
+        public void AddDouble(string Key, string DisplayName, double Min, double Max, bool Multiplayer)
+        {
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(double));
+        }
+
+        private void AddValue(string Key, string DisplayName, double Min, double Max, bool Multiplayer, Type valueType)
+        {
+            if (name2value.ContainsKey(Key)) return;
+
+            StoredVariable sv = new StoredVariable(DisplayName, Multiplayer, valueType);
+            sv.SetMinMax(Min, Max);
+            name2value.Add(Key, sv);
+            nameOrder.Enqueue(Key);
         }
         #endregion
 
@@ -140,10 +199,9 @@ namespace FKTModSettings
             if (!name2value.ContainsKey(Key)) return;
             StoredVariable sv;
             name2value.TryGetValue(Key, out sv);
-            if(name2value != null)
+            if (name2value != null)
             {
-                if (!sv.IsBool) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to boolean, but is expecting a different type. (" + sv.ValueType + ")");
-                sv.UpdateBool(ref Value);
+                sv.Update(ref Value);
             }
         }
         /// <summary>
@@ -158,8 +216,82 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
-                if (!sv.IsInt) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to integer, but is expecting a different type. (" + sv.ValueType + ")");
-                sv.UpdateInt(ref Value);
+                sv.Update(ref Value);
+            }
+        }
+        /// <summary>
+        /// Get and update the values between the key and the ref variable
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        public void Get(string Key, ref uint Value)
+        {
+            if (!name2value.ContainsKey(Key)) return;
+            StoredVariable sv;
+            name2value.TryGetValue(Key, out sv);
+            if (name2value != null)
+            {
+                sv.Update(ref Value);
+            }
+        }
+        /// <summary>
+        /// Get and update the values between the key and the ref variable
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        public void Get(string Key, ref short Value)
+        {
+            if (!name2value.ContainsKey(Key)) return;
+            StoredVariable sv;
+            name2value.TryGetValue(Key, out sv);
+            if (name2value != null)
+            {
+                sv.Update(ref Value);
+            }
+        }
+        /// <summary>
+        /// Get and update the values between the key and the ref variable
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        public void Get(string Key, ref ushort Value)
+        {
+            if (!name2value.ContainsKey(Key)) return;
+            StoredVariable sv;
+            name2value.TryGetValue(Key, out sv);
+            if (name2value != null)
+            {
+                sv.Update(ref Value);
+            }
+        }
+        /// <summary>
+        /// Get and update the values between the key and the ref variable
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        public void Get(string Key, ref long Value)
+        {
+            if (!name2value.ContainsKey(Key)) return;
+            StoredVariable sv;
+            name2value.TryGetValue(Key, out sv);
+            if (name2value != null)
+            {
+                sv.Update(ref Value);
+            }
+        }
+        /// <summary>
+        /// Get and update the values between the key and the ref variable
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        public void Get(string Key, ref byte Value)
+        {
+            if (!name2value.ContainsKey(Key)) return;
+            StoredVariable sv;
+            name2value.TryGetValue(Key, out sv);
+            if (name2value != null)
+            {
+                sv.Update(ref Value);
             }
         }
         /// <summary>
@@ -174,8 +306,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
-                if (!sv.IsFloat) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to float, but is expecting a different type. (" + sv.ValueType + ")");
-                sv.UpdateFloat(ref Value);
+                sv.Update(ref Value);
             }
         }
         /// <summary>
@@ -190,8 +321,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
-                if (!sv.IsDouble) throw new InvalidCastException(mod.DisplayName + " key '" + Key + "' is set to double, but is expecting a different type. (" + sv.ValueType + ")");
-                sv.UpdateDouble(ref Value);
+                sv.Update(ref Value);
             }
         }
         #endregion

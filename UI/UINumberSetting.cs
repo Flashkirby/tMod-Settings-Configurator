@@ -46,7 +46,7 @@ namespace FKTModSettings.UI
             useDecimalSystem = false;
             int min = (int)(storedVar.valMin - 0.5f);
             int max = (int)storedVar.valMax;
-            if(min - max < 200 && !storedVar.IsInt)
+            if(min - max < 200 && storedVar.IsDecimalNumbers)
             {
                 // set up to allow normalised increments
                 useDecimalSystem = true;
@@ -111,29 +111,19 @@ namespace FKTModSettings.UI
             if (Main.inputText == Main.oldInputText) return; // no change
 
             // Setup input
-            if (storedVar.IsInt)
+            if (storedVar.IsWholeNumbers)
             {
-                int parsedValue = storedVar.storedInt;
+                long parsedValue = (long)storedVar.storedValue;
                 // Allow changing text, only when valid
-                if (int.TryParse(input, out parsedValue) || input == "-")
+                if (long.TryParse(input, out parsedValue) || input == "-")
                 {
                     numberBox.SetText(input);
                     Main.PlaySound(Terraria.ID.SoundID.MenuTick);
                 }
             }
-            else if (storedVar.IsFloat)
+            else if (storedVar.IsDecimalNumbers)
             {
-                float parsedValue = storedVar.storedFloat;
-                // Allow changing text, only when valid
-                if (float.TryParse(input, out parsedValue) || input == "-")
-                {
-                    numberBox.SetText(input);
-                    Main.PlaySound(Terraria.ID.SoundID.MenuTick);
-                }
-            }
-            else if (storedVar.IsDouble)
-            {
-                double parsedValue = storedVar.storedDouble;
+                double parsedValue = storedVar.storedValue;
                 // Allow changing text, only when valid
                 if (double.TryParse(input, out parsedValue) || input == "-")
                 {
@@ -166,28 +156,20 @@ namespace FKTModSettings.UI
             Main.PlaySound(Terraria.ID.SoundID.MenuClose);
 
             if (numberBox.Text.Length == 0 || numberBox.Text == "-") numberBox.SetText("0");
-            if (storedVar.IsInt)
+            if (storedVar.IsWholeNumbers)
             {
-                int parsedValue = storedVar.storedInt;
-                if (int.TryParse(numberBox.Text, out parsedValue))
+                long parsedValue = (long)storedVar.storedValue;
+                if (long.TryParse(numberBox.Text, out parsedValue))
                 {
-                    if (storedVar.storedInt != parsedValue) storedVar.SetInt(parsedValue);
+                    if ((long)storedVar.storedValue != parsedValue) storedVar.Set(parsedValue); // SET
                 }
             }
-            else if (storedVar.IsFloat)
+            else if (storedVar.IsDecimalNumbers)
             {
-                float parsedValue = storedVar.storedFloat;
-                if (float.TryParse(numberBox.Text, out parsedValue))
-                {
-                    if (storedVar.storedFloat != parsedValue) storedVar.SetFloat(parsedValue);
-                }
-            }
-            else if (storedVar.IsDouble)
-            {
-                double parsedValue = storedVar.storedDouble;
+                double parsedValue = storedVar.storedValue;
                 if (double.TryParse(numberBox.Text, out parsedValue))
                 {
-                    if (storedVar.storedDouble != parsedValue) storedVar.SetDouble(parsedValue);
+                    if (storedVar.storedValue != parsedValue) storedVar.Set(parsedValue); // SET
                 }
             }
         }
@@ -197,9 +179,8 @@ namespace FKTModSettings.UI
             double nValue = numberBar.Value;
             if (useDecimalSystem) nValue /= decimalIncrement;
 
-            if (storedVar.IsInt) storedVar.SetInt((int)nValue);
-            if (storedVar.IsFloat) storedVar.SetFloat((float)nValue);
-            if (storedVar.IsDouble) storedVar.SetDouble((double)nValue);
+            if (storedVar.IsWholeNumbers) storedVar.Set((long)nValue); // SET
+            if (storedVar.IsDecimalNumbers) storedVar.Set(nValue); // SET
         }
 
         #endregion
@@ -208,15 +189,10 @@ namespace FKTModSettings.UI
         {
             if (!numberBar.Dragging)
             {
-                double nValue = 0;
+                double boxValue = storedVar.storedValue;
+                if (useDecimalSystem && storedVar.IsDecimalNumbers) boxValue *= decimalIncrement;
 
-                if (storedVar.IsInt) nValue = storedVar.storedInt;
-                if (storedVar.IsFloat) nValue = storedVar.storedFloat;
-                if (storedVar.IsDouble) nValue = storedVar.storedDouble;
-
-                if(useDecimalSystem) nValue *= decimalIncrement;
-
-                numberBar.Value = (int)Math.Round(nValue);
+                numberBar.Value = (int)Math.Round(boxValue);
             }
             if (Focus)
             {
@@ -227,9 +203,7 @@ namespace FKTModSettings.UI
             }
             else
             {
-                if (storedVar.IsInt) numberBox.SetText("" + storedVar.storedInt);
-                if (storedVar.IsFloat) numberBox.SetText("" + storedVar.storedFloat);
-                if (storedVar.IsDouble) numberBox.SetText("" + storedVar.storedDouble);
+                numberBox.SetText("" + storedVar.storedValue);
                 if (!numberBox.IsMouseHovering)
                 {
                     numberBox.BorderColor = _defaultBorder;

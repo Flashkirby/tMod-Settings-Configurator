@@ -49,7 +49,7 @@ namespace FKTModSettings.UI
 
         private void boxOnClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            storedVar.SetBool(!storedVar.storedBool);
+            storedVar.Set(!storedVar.storedBool);
 
             booleanSetting.BackgroundColor = UIColour.darkBackgroundColour;
             booleanSetting.BorderColor = UIColour.lightborderColour;
