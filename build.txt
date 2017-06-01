@@ -3,4 +3,6 @@ version = 0.1
 displayName = Mod Settings Configurator
 homepage = 
 
+weakReferences = CheatSheet@0.2.6,
+
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, *.suo, *.sln, .git, *.md, .git\*, *.fw.png *.TMP

@@ -50,11 +50,59 @@ namespace FKTModSettings
         {
             modSettings = null;
         }
-        public override void AddRecipes()
+        public override void PostSetupContent()
         {
             if (Main.dedServ) return;
+
             modSettingsUI.PostModLoad();
+
+            // Add menu button for hero/cheat
+            Mod herosMod = ModLoader.GetMod("HEROsMod");
+            Mod cheatSheet = ModLoader.GetMod("CheatSheet");
+            try
+            {
+                if (herosMod != null)
+                {
+                    herosMod.Call(
+                        "AddPermission",
+                        "AccessModSettingsConfig",
+                        "Access Mod Settings Configurator"
+                    );
+
+                    herosMod.Call(
+                        "AddSimpleButton",
+                        "AccessModSettingsConfig",
+                        GetTexture("ModMenuButton"),
+                        (Action)SettingsMenuPressed,
+                        (Action<bool>)PermissionChanged,
+                        (Func<string>)ModTooltip
+                    );
+                }
+                else if (cheatSheet != null)
+                {
+                    CheatSheet.CheatSheetInterface.RegisterButton(
+                        cheatSheet,
+                        GetTexture("ModMenuButton"),
+                        SettingsMenuPressed,
+                        ModTooltip);
+                }
+            }
+            catch { }
         }
+        #region Hero/Cheat methods
+        public string ModTooltip()
+        {
+            return modSettingsUI.Visible ? "Close Mod Settings Configurator" : "Open Mod Settings Configurator";
+        }
+
+        public void PermissionChanged(bool hasPermission)
+        {
+            if (!hasPermission)
+            {
+                if (modSettingsUI.Visible) CloseModSettingsMenu();
+            }
+        }
+        #endregion
 
         public override void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
         {
@@ -97,17 +145,21 @@ namespace FKTModSettings
 
             if(ControlModSettings.JustPressed)
             {
-                if (!modSettingsUI.Visible)
-                {
-                    OpenModSettingsMenu();
-                }
-                else
-                {
-                    CloseModSettingsMenu();
-                }
+                SettingsMenuPressed();
             }
         }
 
+        private void SettingsMenuPressed()
+        {
+            if (!modSettingsUI.Visible)
+            {
+                OpenModSettingsMenu();
+            }
+            else
+            {
+                CloseModSettingsMenu();
+            }
+        }
         private void OpenModSettingsMenu()
         {
             if (Main.dedServ) return;
