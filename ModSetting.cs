@@ -171,7 +171,7 @@ namespace FKTModSettings
         /// <param name="Multiplayer">Should this value be server-side? (Hidden for clients) </param>
         public void AddFloat(string Key, string DisplayName, float Min, float Max, bool Multiplayer)
         {
-            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(double));
+            AddValue(Key, DisplayName, Min, Max, Multiplayer, typeof(float));
         }
         /// <summary>
         /// Add a value to configuration
