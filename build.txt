@@ -1,7 +1,7 @@
 author = Flashkirby99
-version = 0.1
+version = 1.0
 displayName = Mod Settings Configurator
-homepage = 
+homepage = https://forums.terraria.org/index.php?members/flashkirby99.10265/
 
 weakReferences = CheatSheet@0.2.6,
 
