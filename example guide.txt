@@ -1,6 +1,5 @@
-TODO: add button to access
-
 See example below on how exactly to implement this mod in your code.
+Or see how it's done here: https://github.com/Flashkirby/Yet-Another-Boss-Health-Bar/blob/master/FKBossHealthBar.cs
 Also make sure to add the reference to the build.txt:
 
 	weakReferences = FKTModSettings
@@ -30,7 +29,7 @@ namespace ExampleMod
                 LoadedFKTModSettings = true;
                 ModSetting setting = ModSettingsAPI.CreateModSettingConfig(this);
 				
-                setting.AddComment("This is a piece of text that serves no particular purpose. ");
+                setting.AddComment("This is a piece of text that serves no particular purpose. ", 1f);
 				
 				setting.AddBool(
 					"isday",		// "Key" is the variable name
