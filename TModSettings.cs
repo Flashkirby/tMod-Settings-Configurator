@@ -43,6 +43,7 @@ namespace FKTModSettings
             setting.AddComment("This is a barebones framework for modifying supported in-game settings! ");
             setting.AddBool("isday", "Day Time", true);
             setting.AddDouble("dayticks", "Current Time", 0, Main.dayLength, true);
+            setting.AddFloat("modifyWidth", "Modify Config Width", 700, 2000, false);
             setting.AddComment("Version " + this.Version);
         }
         public override void Unload()
@@ -85,6 +86,7 @@ namespace FKTModSettings
             {
                 setting.Get("isday", ref Main.dayTime);
                 setting.Get("dayticks", ref Main.time);
+                setting.Get("modifyWidth", ref modSettingsUI.configWidth);
             }
 
             if (Main.dedServ) return;

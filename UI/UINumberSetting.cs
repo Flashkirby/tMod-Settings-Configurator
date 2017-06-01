@@ -166,8 +166,8 @@ namespace FKTModSettings.UI
             }
             else if (storedVar.IsDecimalNumbers)
             {
-                float parsedValue = (float)storedVar.storedValue;
-                if (float.TryParse(numberBox.Text, out parsedValue))
+                double parsedValue = (double)storedVar.storedValue;
+                if (double.TryParse(numberBox.Text, out parsedValue))
                 {
                     if (storedVar.storedValue != parsedValue) storedVar.Set(parsedValue); // SET
                 }
@@ -203,7 +203,7 @@ namespace FKTModSettings.UI
             }
             else
             {
-                numberBox.SetText("" + storedVar.storedValue);
+                numberBox.SetText(((float)storedVar.storedValue).ToString());
                 if (!numberBox.IsMouseHovering)
                 {
                     numberBox.BorderColor = _defaultBorder;

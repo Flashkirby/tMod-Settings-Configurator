@@ -33,12 +33,15 @@ namespace FKTModSettings
         private UIList _settingsContainer; // Container for the left panel
         private UIScrollbar _settingsScroll; // Scroll bar for the left panel
 
+        private float configWidthOld = 700f;
+        internal float configWidth = 700f;
+
         public override void OnInitialize()
         {
             // Start defining the element
             _baseElement = new UIElement();
             _baseElement.Width.Set(0f, 0.8f);
-            _baseElement.MaxWidth.Set(700f, 0f);
+            _baseElement.MaxWidth.Set(configWidth, 0f);
             _baseElement.Height.Set(0f, 0.8f);
             _baseElement.HAlign = 0.5f;
             _baseElement.VAlign = 0.5f;
@@ -204,6 +207,15 @@ namespace FKTModSettings
             Main.LocalPlayer.mouseInterface = _baseElement.IsMouseHovering;
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (configWidth != configWidthOld)
+            {
+                configWidthOld = configWidth;
+                _baseElement.MaxWidth.Set(configWidth, 0f);
+            }
+            base.Update(gameTime);
+        }
     }
 
     public class UIColour
