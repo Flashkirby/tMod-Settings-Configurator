@@ -45,5 +45,17 @@ namespace FKTModSettings
             }
             return false;
         }
+
+        /// <summary>
+        /// Check if the mod is currently open in the menu
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        public static bool ModCurrentlyOpen(Mod mod)
+        {
+            return TModSettings.modSettingsUI.ActiveModSetting.mod == mod
+                && TModSettings.modSettingsUI.Visible;
+        }
+
     }
 }

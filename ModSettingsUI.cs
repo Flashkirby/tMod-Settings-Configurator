@@ -36,6 +36,8 @@ namespace FKTModSettings
         private float configWidthOld = 700f;
         internal float configWidth = 700f;
 
+        internal ModSetting ActiveModSetting;
+
         public override void OnInitialize()
         {
             // Start defining the element
@@ -192,8 +194,8 @@ namespace FKTModSettings
             // and trigger the mouse up method to reset state accordingly.
             _settingsContainer.Clear();
             _basePanel.RemoveChild(_settingsPanel);
-
-            bool anyActive = false;
+            
+            ActiveModSetting = null;
             foreach (UIModEntry me in _modListElements)
             {
                 if (!me.Equals(listeningElement))
@@ -207,13 +209,14 @@ namespace FKTModSettings
                     // Clear and re-add the list based from open mod, sorted by index
                     _settingsContainer.AddRange(me.modSetting.GetUIElements());
                     _settingsContainer.UpdateOrder();
+                    ActiveModSetting = me.modSetting;
                 }
 
-                if (!anyActive) anyActive = me.Active;
+                if (ActiveModSetting == null && me.Active) ActiveModSetting = me.modSetting;
             }
 
             // Restore settings panel if something's open
-            if (anyActive)
+            if (ActiveModSetting != null)
             {
                 _basePanel.Append(_settingsPanel);
             }
