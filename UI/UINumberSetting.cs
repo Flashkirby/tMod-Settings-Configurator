@@ -145,8 +145,14 @@ namespace FKTModSettings.UI
             }
         }
 
-        private void SetValueFromText()
+        /// <summary>
+        /// Use to cancel
+        /// </summary>
+        internal void SetValueFromText()
         {
+            // Shouldn't even do anything if not focussed in
+            if (!Focus) return;
+
             Focus = false;
             Main.hasFocus = false;
             Main.blockInput = false;

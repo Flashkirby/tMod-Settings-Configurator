@@ -146,6 +146,7 @@ namespace FKTModSettings
                         {
                             UINumberSetting element = new UINumberSetting(sv);
                             element.index = count;
+                            element.OnClick += NumberSettingOnClick;
                             uiElements.Enqueue(element);
                         }
                         else if (sv.IsComment)
@@ -160,6 +161,29 @@ namespace FKTModSettings
                 }
             }
             _modListContainer.UpdateOrder();
+        }
+
+        private void NumberSettingOnClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            try
+            {
+                foreach(ModSetting ms in TModSettings.modSettings)
+                {
+                    foreach(UIPanelSortable ps in ms.GetUIElements())
+                    {
+                        // Don't unfocus the one just clicked.
+                        if (ps == listeningElement) continue;
+
+                        if (ps.GetType() == typeof(UINumberSetting))
+                        {
+                            UINumberSetting numbers = (UINumberSetting)ps;
+                            // Unfocus
+                            numbers.SetValueFromText();
+                        }
+                    }
+                }
+            }
+            catch { }
         }
 
         private void ModListOnClick(UIMouseEvent evt, UIElement listeningElement)
