@@ -61,35 +61,40 @@ namespace FKTModSettings
             Mod cheatSheet = ModLoader.GetMod("CheatSheet");
             try
             {
-                if (herosMod != null)
-                {
-                    herosMod.Call(
-                        "AddPermission",
-                        "AccessModSettingsConfig",
-                        "Access Mod Settings Configurator"
-                    );
-
-                    herosMod.Call(
-                        "AddSimpleButton",
-                        "AccessModSettingsConfig",
-                        GetTexture("ModMenuButton"),
-                        (Action)SettingsMenuPressed,
-                        (Action<bool>)PermissionChanged,
-                        (Func<string>)ModTooltip
-                    );
-                }
-                else if (cheatSheet != null)
-                {
-                    CheatSheet.CheatSheetInterface.RegisterButton(
-                        cheatSheet,
-                        GetTexture("ModMenuButton"),
-                        SettingsMenuPressed,
-                        ModTooltip);
-                }
+                HeroCheatIntegration(herosMod, cheatSheet);
             }
             catch { }
         }
+
         #region Hero/Cheat methods
+        private void HeroCheatIntegration(Mod herosMod, Mod cheatSheet)
+        {
+            if (herosMod != null)
+            {
+                herosMod.Call(
+                    "AddPermission",
+                    "AccessModSettingsConfig",
+                    "Access Mod Settings Configurator"
+                );
+
+                herosMod.Call(
+                    "AddSimpleButton",
+                    "AccessModSettingsConfig",
+                    GetTexture("ModMenuButton"),
+                    (Action)SettingsMenuPressed,
+                    (Action<bool>)PermissionChanged,
+                    (Func<string>)ModTooltip
+                );
+            }
+            else if (cheatSheet != null)
+            {
+                CheatSheet.CheatSheetInterface.RegisterButton(
+                    cheatSheet,
+                    GetTexture("ModMenuButton"),
+                    SettingsMenuPressed,
+                    ModTooltip);
+            }
+        }
         public string ModTooltip()
         {
             return modSettingsUI.Visible ? "Close Mod Settings Configurator" : "Open Mod Settings Configurator";

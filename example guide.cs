@@ -1,0 +1,78 @@
+/**
+ * See example below on how exactly to implement this mod in your code.
+ * Or see how it's done here: https://github.com/Flashkirby/Yet-Another-Boss-Health-Bar/blob/master/
+ *      FKBossHealthBar.cs
+ * Also make sure to add the reference to the build.txt:
+ * 	    weakReferences = FKTModSettings
+ */
+
+using Terraria;
+using Terraria.ModLoader;
+ 
+namespace ExampleMod
+{
+    class ExampleMod : Mod
+    {
+        // Use a boolean to check if the appropriate mod is loaded
+        public bool LoadedFKTModSettings = false;
+
+        public override void Load()
+        {
+            /* While you're messing with mod configurations, why not also check out
+             * goldenapple's super useful tutorial on how to use mod configs files:
+             * https://forums.terraria.org/index.php?threads/modders-guide-to-config-files-and-optional-features.48581/
+             */
+
+            LoadedFKTModSettings = ModLoader.GetMod("FKTModSettings") != null;
+            if (LoadedFKTModSettings)
+            {
+                // Needs to be in a method otherwise it throws a namespace error
+                try { LoadModSettings(); }
+                catch { }
+            }
+        }
+        private void LoadModSettings()
+        {
+            FKTModSettings.ModSetting setting = FKTModSettings.ModSettingsAPI.CreateModSettingConfig(this);
+
+            setting.AddComment("This is a piece of text that serves no particular purpose. ", 1f);
+
+            setting.AddBool(
+                "isday",        // "Key" is the variable name
+                "Day Time",     // "Display Name" is the text displayed for this on the menu
+                true);          // "Multiplayer" checks if this value should be disabled from editing if on a server
+
+            setting.AddInt(
+                "anglerQuestsFinished",     // "Key"
+                "Fishing Quests Completed", // "Display Name"
+                0,                          // "Min" Numbers must provide a minimum value
+                150,                        // "Max" Numbers must provide a maximum value
+                false);                     // "Multiplayer"
+
+            setting.AddDouble("dayticks", "Current Time", 0, Main.dayLength, true);
+        }
+       
+        public override void PostUpdateInput()
+        {
+            if (LoadedFKTModSettings && !Main.gameMenu)
+            {
+                // Needs to be in a method otherwise it throws a namespace error
+                try { UpdateModSettings(); }
+                catch { }
+            }
+        }
+        private void UpdateModSettings()
+        {
+            FKTModSettings.ModSetting setting;
+            if (FKTModSettings.ModSettingsAPI.TryGetModSetting(this, out setting))
+            {
+                setting.Get(
+                    "isday",            // Provide the variable name given in the Load() method
+                    ref Main.dayTime    // Pass the value you want to be adjustable as a ref variable
+                    );
+                setting.Get("dayticks", ref Main.time);
+                setting.Get("anglerQuestsFinished", ref Main.LocalPlayer.anglerQuestsFinished);
+            }
+        }
+    }
+}
