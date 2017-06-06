@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
+using Terraria.IO;
 
 using FKTModSettings.UI;
 
@@ -210,6 +209,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -225,6 +225,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -240,6 +241,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -255,6 +257,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -270,6 +273,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -285,6 +289,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -300,6 +305,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -315,6 +321,7 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
         }
@@ -330,8 +337,28 @@ namespace FKTModSettings
             name2value.TryGetValue(Key, out sv);
             if (name2value != null)
             {
+                GetConfig(Key, ref Value, sv);
                 sv.Update(ref Value);
             }
+        }
+
+        internal void GetConfig<T>(string Key, ref T Value, StoredVariable sv)
+        {
+            if (!_enableAutoConfig) return;
+            if (_loadOnceCounter == 0) return;
+            try
+            {
+                _config.Get(Key, ref Value);
+                sv.Set(Value);
+
+                _loadOnceCounter--;
+
+                // Need to save  new value in case of conflict
+                // if (_loadConflict) { _config.Put(Key, Value); }
+                // save once values are stored
+                // if (_loadOnceCounter == 0) _config.Save();
+            }
+            catch { }
         }
         #endregion
 
@@ -349,5 +376,85 @@ namespace FKTModSettings
             TModSettings.modSettings.Add(this);
             return true;
         }
+
+        #region Custom Config
+        private Preferences _config;
+        private string loadedVersion;
+        private uint _loadOnceCounter;
+        private bool _loadConflict { get { return loadedVersion.CompareTo(mod.Version.ToString()) != 0; } }
+        private bool _enableAutoConfig;
+        private string _modSaveName = "";
+
+        public void EnableAutoConfig()
+        {
+            EnableAutoConfig(mod.Name + "_autogen");
+
+        }
+        public void EnableAutoConfig(Mod mod)
+        {
+            _enableAutoConfig = true;
+            _modSaveName = mod.Name;
+        }
+        public void EnableAutoConfig(string saveFileName)
+        {
+            _enableAutoConfig = true;
+            _modSaveName = saveFileName;
+        }
+
+        private string generateConfigPath()
+        {
+            return Path.Combine(Main.SavePath, "Mod Configs", _modSaveName + ".json");
+        }
+        internal void LoadConfigFile()
+        {
+            if (!_enableAutoConfig) return;
+
+            // https://forums.terraria.org/index.php?threads/modders-guide-to-config-files-and-optional-features.48581/
+            _config = new Preferences(generateConfigPath());
+
+            loadedVersion = "";
+            if (_config.Load())
+            {
+                _config.Get("version", ref loadedVersion);
+            }
+
+            // Set up load counter for checking to assign each variable once
+            _loadOnceCounter = 0;
+            foreach (StoredVariable sv in GetStoredVariables())
+            {
+                if (sv.IsComment) continue;
+                _loadOnceCounter++;
+            }
+
+            // Doens't exist, or wrong version
+            if (_loadConflict)
+            {
+                // If the correct config doesn't exist, if there are variables to be saved
+                // then save them ya!
+                if (_loadOnceCounter > 0)
+                {
+                    _config.Put("version", mod.Version.ToString());
+                    _config.Save();
+                }
+            }
+        }
+        internal void SaveConfigFile()
+        {
+            if (!_enableAutoConfig) return;
+            foreach (KeyValuePair<string, StoredVariable> kvp in name2value)
+            {
+                if (kvp.Value.IsComment) continue;
+                if (kvp.Value.IsBoolean)
+                {
+                    _config.Put(kvp.Key, kvp.Value.storedBool);
+                }
+                else
+                {
+                    _config.Put(kvp.Key, kvp.Value.storedValue);
+                }
+            }
+            _config.Save();
+        }
+        #endregion
     }
 }

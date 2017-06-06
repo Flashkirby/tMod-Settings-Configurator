@@ -40,6 +40,7 @@ namespace FKTModSettings
             modSettingsUI.Activate();
             
             ModSetting setting = ModSettingsAPI.CreateModSettingConfig(this);
+            setting.EnableAutoConfig(this);
             setting.AddComment("This is a barebones framework for modifying supported in-game settings! ");
             setting.AddBool("isday", "Day Time", true);
             setting.AddDouble("dayticks", "Current Time", 0, Main.dayLength, true);
@@ -50,10 +51,22 @@ namespace FKTModSettings
         {
             modSettings = null;
         }
+        public override void PreSaveAndQuit()
+        {
+            foreach (ModSetting ms in modSettings)
+            {
+                ms.SaveConfigFile();
+            }
+        }
+
         public override void PostSetupContent()
         {
             if (Main.dedServ) return;
 
+            foreach(ModSetting ms in modSettings)
+            {
+                ms.LoadConfigFile();
+            }
             modSettingsUI.PostModLoad();
 
             // Add menu button for hero/cheat

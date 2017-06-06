@@ -5,13 +5,12 @@
  * Also make sure to add the reference to the build.txt:
  * 	    weakReferences = FKTModSettings
  */
-
 using Terraria;
 using Terraria.ModLoader;
  
-namespace ExampleMod
+namespace ExampleModSettings
 {
-    class ExampleMod : Mod
+    class ExampleModSettings : Mod
     {
         // Use a boolean to check if the appropriate mod is loaded
         public bool LoadedFKTModSettings = false;
@@ -34,6 +33,9 @@ namespace ExampleMod
         private void LoadModSettings()
         {
             FKTModSettings.ModSetting setting = FKTModSettings.ModSettingsAPI.CreateModSettingConfig(this);
+
+			// Enable auto-saving between sessions
+            setting.EnableAutoConfig();
 
             setting.AddComment("This is a piece of text that serves no particular purpose. ", 1f);
 
