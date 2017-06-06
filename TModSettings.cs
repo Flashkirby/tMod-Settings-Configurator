@@ -40,7 +40,7 @@ namespace FKTModSettings
             modSettingsUI.Activate();
             
             ModSetting setting = ModSettingsAPI.CreateModSettingConfig(this);
-            setting.EnableAutoConfig(this);
+            // setting.EnableAutoConfig(this);
             setting.AddComment("This is a barebones framework for modifying supported in-game settings! ");
             setting.AddBool("isday", "Day Time", true);
             setting.AddDouble("dayticks", "Current Time", 0, Main.dayLength, true);
