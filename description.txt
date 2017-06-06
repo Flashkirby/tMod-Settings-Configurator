@@ -1,6 +1,11 @@
-Definitely not inspired by a certain MCM. Pull up an in-game menu to modify settings for supported mods, default key is the tilde <`> key.
+Definitely not inspired by a certain MCM. Pull up an in-game menu to modify settings for supported mods, default key is the tilde <`> key, but can also be accessed via Mod Extensions if you have HERO's mod or Cheat Sheet installed.
 
-Supports disabling certain settings for clients in multiplayer.
+Features for modders:
+ * Add variables and comments to a list of modifiable settings.
+ * Supports bools and most number values.
+ * Simple system for saving and loading variables between games.
+ * Disable certain settings for clients in multiplayer.
+
 
 Credits: 
 Flashkirby99 - I am making this mod.
