@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.UI;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameInput;
 
 namespace FKTModSettings.UI
 {
@@ -74,6 +78,10 @@ namespace FKTModSettings.UI
         private void BoxOnClick(UIMouseEvent evt, UIElement listeningElement)
         {
             if (Main.drawingPlayerChat) return;
+            if (IngameFancyUI.CanShowVirtualKeyboard(1) && UIVirtualKeyboard.KeyboardContext == 1)
+            {
+                return;
+            }
             if (Focus)
             {
                 SetValueFromText();
@@ -93,6 +101,8 @@ namespace FKTModSettings.UI
         {
             Main.hasFocus = true;
             Main.chatRelease = false;
+            PlayerInput.WritingText = true;
+            Main.instance.HandleIME();
             if (focusTick < 25)
             {
                 focusTick++;

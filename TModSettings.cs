@@ -122,14 +122,14 @@ namespace FKTModSettings
         }
         #endregion
 
-        public override void ModifyInterfaceLayers(List<MethodSequenceListItem> layers)
+        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             //All this stuff is jankyily adapted from ExampleMod
             //This is getting the mouse layer, and adding the UI just underneath it
             int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Cursor"));
             if (MouseTextIndex != -1)
             {
-                layers.Insert(MouseTextIndex, new MethodSequenceListItem(
+                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
                     "TModSettingsPanel",
                     delegate
                     {
@@ -139,8 +139,7 @@ namespace FKTModSettings
                             modSettingsUI.Draw(Main.spriteBatch);
                         }
                         return true;
-                    },
-                    null)
+                    })
                 );
             }
         }

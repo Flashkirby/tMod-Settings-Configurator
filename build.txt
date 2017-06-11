@@ -3,6 +3,6 @@ version = 1.1
 displayName = Mod Settings Configurator
 homepage = https://forums.terraria.org/index.php?threads/mod-settings-configurator.58368/
 
-weakReferences = CheatSheet@0.2.6,
+weakReferences = CheatSheet@0.2.7,
 
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, *.suo, *.sln, .git, *.md, .git\*, *.fw.png *.TMP
