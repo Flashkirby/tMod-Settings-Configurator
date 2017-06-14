@@ -4,6 +4,5 @@ obj/
 *.fw.png
 *.suo
 *.sln
-*.csproj
 *~
 *.TMP
